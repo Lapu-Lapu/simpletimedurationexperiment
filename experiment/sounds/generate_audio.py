@@ -12,7 +12,7 @@ d = sorted(d)
 print(d)
 
 for ms in d:
-    cmd = f"ffmpeg -i sounds/Sine_wave_440.ogg -ss 00:00:00.000 -t 00:00:00.{ms} -c copy sounds/{ms}_ms.ogg"
+    cmd = f"ffmpeg -i experiment/sounds/Sine_wave_440.ogg -ss 00:00:00.000 -t 00:00:00.{ms} -c copy experiment/sounds/{ms}_ms.ogg"
     print(cmd)
     out = run(cmd.split())
     print(out.returncode)
