@@ -4,26 +4,50 @@ author: Benjamin Knopp
 date: 2021/03/10
 ...
 
-# Intro
-## Task / Generative Process
+# What is psychophysics?
 
-![Psychophysical function](output_4_0.png){width=70%}
+## Psychophysics
+
+- Physical Stimulus $\rightarrow$ Psychological Response
+- Problem: Quantify psychological processes.
+- One Solution: 2-alterative forced choice tasks.
+    - Example:
+        - In each trial: 
+        - two beeps, first constant duration, second varying
+        - participants have to choose which beep was longer
+        - if duration is perceived as equal, probability of responses is equal
+
+## Psychophysics: PSE and JND
+
+Beep Duration $\rightarrow$ Perceived Duration
+
+PSE
+: Point of Subjective Equality
+
+JND
+: Just Noticable Difference
+
+![](output_4_0.png){width=70%}
 
 ## Data
 
 Data for all 8 subjects, showing the proportion of “long” responses as a function of test interval duration.
 
-![Data](output_7_0.png)
+![](output_7_0.png)
 
 # Psychophysical Functions
 
 ## Psychophysical Functions: Model
 
-![Model](model.png){width=70%}
+\begin{align}
+\Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}
+\end{align}
+
+![](model.png){width=70%}
 
 ## Result: Logistic Regression
 
-![Fitted model](output_15_0.png)
+![](output_15_0.png)
 
 ## Exercise 12.1.1
 
@@ -79,18 +103,28 @@ possible outliers would influence the function, and the inferred JND?
 
 ## Model
 
-![Model](contamination_model.png){width=70%}
+![](contamination_model.png){width=70%}
 
 ## Result: Regression
 
-![png](output_30_0.png)
+![](output_30_0.png)
 
 ## Result: Posterior JND
 
-![png](output_31_0.png)
+![](output_31_0.png)
 
 ## Exercise 12.2.1
 
 How did the inclusion of the contaminant process change the
-inference for the psychophysical functions, and the key JND and PSE prop-
-erties?
+inference for the psychophysical functions, and the key JND and PSE properties?
+
+## Summary
+
+- 2AFC paradigm useful for connecting physical stimuli with psychological processes
+- Logistic regression model estimates:
+    - Point of Subjective Equality
+    - Just Noticable Difference
+- pymc3 makes Bayesian analysis easy and fun!
+- junpenglao provided pymc3 implementation $\rightarrow$ more fun!
+
+![](junpenglao.png){width=30%}
