@@ -41,7 +41,7 @@ if __name__ == '__main__':
         d = pd.read_csv(fn, sep=',')
         d['name'] = name
         d['id'] = identifier
-        print(d.shape)
+        print(name, identifier, d.shape)
         data.append(d)
     data = pd.concat(data)
     idxs = ~np.isnan(data.response)
@@ -54,11 +54,11 @@ if __name__ == '__main__':
     data['duration'] = data.stimulus.apply(get_duration)
     rprop = data.groupby('duration').response.mean()
     data_x = rprop.index
-    print(rprop)
+    # print(rprop)
     data_n = data.groupby('duration').response.agg(len)
     data_r = data.groupby('duration').response.sum()
-    rprop.plot(style='.')
-    plt.show()
+    # rprop.plot(style='.')
+    # plt.show()
 
     max_durations = 41
 
