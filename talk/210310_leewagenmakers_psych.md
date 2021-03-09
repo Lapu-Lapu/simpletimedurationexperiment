@@ -27,21 +27,30 @@ PSE
 JND
 : Just Noticable Difference
 
-![](output_4_0.png){width=70%}
+![](figures/pse_jnd_illustration.png){width=70%}
 
 ## Data
 
-Data for all 8 subjects, showing the proportion of “long” responses as a function of test interval duration.
+Proportion of “long” responses as a function of test interval duration.
 
-![](output_7_0.png)
+![](figures/data_plot.png)
 
 # Psychophysical Functions
 
 ## Psychophysical Functions: Model
 
+::: columns
+
+::: column
 \begin{align}
 \Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}
 \end{align}
+:::
+
+::: column
+![](Binomial_Example.png){width=90%}
+:::
+:::
 
 ![](model.png){width=70%}
 
