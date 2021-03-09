@@ -48,11 +48,11 @@ Proportion of “long” responses as a function of test interval duration.
 :::
 
 ::: column
-![](Binomial_Example.png){width=90%}
+![](figures/Binomial_Example.png){width=90%}
 :::
 :::
 
-![](model.png){width=70%}
+![](figures/model.png){width=70%}
 
 ## Result: Logistic Regression
 

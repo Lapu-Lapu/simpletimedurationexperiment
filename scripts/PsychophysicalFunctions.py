@@ -45,54 +45,28 @@ def load_data():
         names = {i: s[:-1] for i, s in zip(range(len(r)), fh)}
     return x, n, r, rprop, names
 
-if __name__ == '__main__':
+
+def tPhi(x):
+    # probit transform
+    return 0.5 + 0.5 * pm.math.erf(x / pm.math.sqrt(2))
 
 
-    # Data for all 8 subjects, showing the proportion of “long” responses as a function of test interval duration.
+def tlogit(x):
+    return 1 / (1 + tt.exp(-x))
 
 
-    x, n, r, rprop, names = load_data()
+def find_nearest(array, value):
+    idx = (np.abs(array - value)).argmin()
+    return idx
 
 
-    # The psychometric function here is a logistic function with parameters $\alpha_i$ and $\beta_i$:  
-    # 
-    # $$ \theta_{ij} = \frac{1}{1+\text{exp}\{-[\alpha_{i}+\beta_{i}(x_{ij}-\bar x_{i})]\}}$$  
-    # $$\text{or}$$   
-    # $$ \text{logit}(\theta_{ij}) = \alpha_{i}+\beta_{i}(x_{ij}-\bar x_{i})$$
-    # 
-    # ## 12.1 Psychophysical functions
-    # 
-    # 
-    # $$ r_{ij} \sim \text{Binomial}(\theta_{ij},n_{ij})$$
-    # $$ \text{logit}(\theta_{ij}) = \alpha_{i}+\beta_{i}(x_{ij}-\bar x_{i})$$
-    # $$ \alpha_{i} \sim \text{Gaussian}(\mu_{\alpha},\sigma_{\alpha})$$
-    # $$ \beta_{i} \sim \text{Gaussian}(\mu_{\beta},\sigma_{\beta})$$
-    # $$ \mu_{\alpha} \sim \text{Gaussian}(0,0.001)$$
-    # $$ \mu_{\beta} \sim \text{Gaussian}(0,0.001)$$
-    # $$ \sigma_{\alpha} \sim \text{Uniform}(0,1000)$$
-    # $$ \sigma_{\beta} \sim \text{Uniform}(0,1000)$$
-
-    import scipy.stats as stats
-    from matplotlib.ticker import MaxNLocator
-
-    N = 30
-    p = 0.8
-    theta = stats.binom(N, p)
-    r = np.arange(10, N, dtype=int)
-    fig = plt.figure()
-    ax = fig.gca()
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.set_title(f'Binomial Distribution (N={N}; $\Theta$={p})')
-    ax.set_xlabel('$r_{ij}$')
-    ax.set_ylabel('$p(r_{ij})$')
-    ax.bar(r, theta.pmf(r))
-    plt.savefig('Binomial_Example.png')
-
-
+def prepare_data(x, n, r):
     xij_tmp = x.values
     nij_tmp = n.values
     rij_tmp = r.values
     tmp, nstim2 = np.shape(xij_tmp)
+    xmean = x.mean(axis=1)
+    nsubjs = len(r)
 
     xmeanvect = np.repeat(xmean, nstim2)
     sbjidx = np.repeat(np.arange(nsubjs), nstim2)
@@ -108,26 +82,12 @@ if __name__ == '__main__':
     rij = rij2[validmask]
     xvect = xmeanvect[validmask]
     sbjid = sbjidx[validmask]
+    return xij, nij, rij, xvect, xmean, sbjid, nsubjs
 
 
-    # Helper function
-
-    def tPhi(x):
-        # probit transform
-        return 0.5 + 0.5 * pm.math.erf(x / pm.math.sqrt(2))
-
-
-    def tlogit(x):
-        return 1 / (1 + tt.exp(-x))
-
-
-    def find_nearest(array, value):
-        idx = (np.abs(array - value)).argmin()
-        return idx
-
-
-    trace1['mu_a'].mean(), trace1['mu_b'].mean()
-
+if __name__ == '__main__':
+    x, n, r, rprop, names = load_data()
+    xij, nij, rij, xvect, xmean, sbjid, nsubjs = prepare_data(x, n, r)
 
     with pm.Model() as model1:
         #sigma_a = pm.Uniform("sigma_a", lower=0, upper=10)
