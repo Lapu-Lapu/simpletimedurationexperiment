@@ -5,6 +5,8 @@ import matplotlib
 matplotlib.use('Agg')
 matplotlib.rcParams['savefig.bbox'] = 'tight'
 
+from math import ceil
+
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np

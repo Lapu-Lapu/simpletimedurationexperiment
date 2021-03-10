@@ -15,7 +15,7 @@ fig.text(
     fontsize=20,
 )
 #fig.suptitle("Proportion of long responses as function of test durations.")
-gs = gridspec.GridSpec(3, 4)
+gs = gridspec.GridSpec(ceil(nsubjs/4), 4)
 
 for ip in np.arange(nsubjs):
     ax = plt.subplot(gs[ip])

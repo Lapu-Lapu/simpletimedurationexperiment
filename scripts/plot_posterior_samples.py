@@ -25,7 +25,7 @@ fig.text(
     rotation="vertical",
     fontsize=20,
 )
-gs = gridspec.GridSpec(3, 4)
+gs = gridspec.GridSpec(ceil(nsubjs/4), 4)
 
 ppcsamples = 100
 

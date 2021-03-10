@@ -23,7 +23,7 @@ betaMAP2 = tmp["mean"][np.arange(nsubjs) + nsubjs]
 fig = plt.figure(figsize=(16, 8))
 fig.text(0.5, -0.02, "JND (ms)", ha="center", fontsize=20)
 fig.text(-0.02, 0.5, "Posterior Density", va="center", rotation="vertical", fontsize=20)
-gs = gridspec.GridSpec(3, 4)
+gs = gridspec.GridSpec(ceil(nsubjs/4), 4)
 
 ppcsamples = 200
 

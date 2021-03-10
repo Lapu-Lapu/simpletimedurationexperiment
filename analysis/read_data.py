@@ -25,8 +25,14 @@ def get_padded_lines(fh):
     return lines
 
 
+def filename_to_dict(fn):
+    with open(fn) as fh:
+        lines = get_padded_lines(fh)
+    return {f'Subject {i+1}': line for i, line in enumerate(lines)}
+
+
 def get_new_line(lst):
-    return '\t'.join([s if s else 'NaN' for s, i in zip_longest(lst, range(41))])
+    return '\t'.join([s if s else 'NaN' for s, i in zip_longest(lst, range(41))]) + '\n'
 
 
 if __name__ == '__main__':
@@ -34,6 +40,7 @@ if __name__ == '__main__':
     name_dict = defaultdict(list)
     with open('analysis/files.txt') as fh:
         for line in fh:
+            print(line)
             name, fn = line.rstrip().split(',')
             print(fn)
             name_dict[name].append(fn)
@@ -78,38 +85,65 @@ if __name__ == '__main__':
 
     max_durations = 41
 
-    with open('analysis/data_x.txt') as fh:
-        lines = get_padded_lines(fh)
-    for name in names:
-        line = get_new_line(data_x[name].map(str))
-        lines.append(line+'\n')
+    with open('analysis/names.txt') as fh:
+        selected_names = list(map(str.rstrip, fh.readlines()))
+
+    x_subj = filename_to_dict('analysis/data_x.txt')
+    x_new = {name: get_new_line(data_x[name].map(str)) for name in names}
+    lines = [x_new[name] if name in x_new else x_subj[name] for name in selected_names]
     with open('analysis/data_x_c.txt', 'w') as fh:
         fh.writelines(lines)
 
-    with open('analysis/data_n.txt') as fh:
-        lines = get_padded_lines(fh)
-    for name in names:
-        line = get_new_line(data_n[name].map(int).map(str))
-        lines.append(line+'\n')
+    x_subj = filename_to_dict('analysis/data_n.txt')
+    x_new = {name: get_new_line(data_n[name].map(int).map(str)) for name in names}
+    lines = [x_new[name] if name in x_new else x_subj[name] for name in selected_names]
     with open('analysis/data_n_c.txt', 'w') as fh:
         fh.writelines(lines)
 
-    with open('analysis/data_r.txt') as fh:
-        lines = get_padded_lines(fh)
-    for name in names:
-        line = get_new_line(data_r[name].map(int).map(str))
-        lines.append(line+'\n')
+    x_subj = filename_to_dict('analysis/data_r.txt')
+    x_new = {name: get_new_line(data_r[name].map(int).map(str)) for name in names}
+    lines = [x_new[name] if name in x_new else x_subj[name] for name in selected_names]
     with open('analysis/data_r_c.txt', 'w') as fh:
         fh.writelines(lines)
 
-    with open('analysis/data_rprop.txt') as fh:
-        lines = get_padded_lines(fh)
-    for name in names:
-        line = get_new_line(data_rprop[name].map(str))
-        lines.append(line+'\n')
+    x_subj = filename_to_dict('analysis/data_rprop.txt')
+    x_new = {name: get_new_line(data_rprop[name].map(str)) for name in names}
+    lines = [x_new[name] if name in x_new else x_subj[name] for name in selected_names]
     with open('analysis/data_rprop_c.txt', 'w') as fh:
         fh.writelines(lines)
 
-    names = [f'Subject {i}' for i in range(1, 9)] + names
-    with open('analysis/names.txt', 'w') as fh:
-        fh.writelines(n + '\n' for n in names)
+    # with open('analysis/data_x.txt') as fh:
+    #     lines = get_padded_lines(fh)
+    # for name in names:
+    #     line = get_new_line(data_x[name].map(str))
+    #     lines.append(line+'\n')
+    # with open('analysis/data_x_c.txt', 'w') as fh:
+    #     fh.writelines(lines)
+    #
+    # with open('analysis/data_n.txt') as fh:
+    #     lines = get_padded_lines(fh)
+    # for name in names:
+    #     line = get_new_line(data_n[name].map(int).map(str))
+    #     lines.append(line+'\n')
+    # with open('analysis/data_n_c.txt', 'w') as fh:
+    #     fh.writelines(lines)
+    #
+    # with open('analysis/data_r.txt') as fh:
+    #     lines = get_padded_lines(fh)
+    # for name in names:
+    #     line = get_new_line(data_r[name].map(int).map(str))
+    #     lines.append(line+'\n')
+    # with open('analysis/data_r_c.txt', 'w') as fh:
+    #     fh.writelines(lines)
+    #
+    # with open('analysis/data_rprop.txt') as fh:
+    #     lines = get_padded_lines(fh)
+    # for name in names:
+    #     line = get_new_line(data_rprop[name].map(str))
+    #     lines.append(line+'\n')
+    # with open('analysis/data_rprop_c.txt', 'w') as fh:
+    #     fh.writelines(lines)
+    #
+    # names = [f'Subject {i}' for i in range(1, 9)] + names
+    # with open('analysis/names.txt', 'w') as fh:
+    #     fh.writelines(n + '\n' for n in names)
