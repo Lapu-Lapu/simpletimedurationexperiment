@@ -56,18 +56,18 @@ Proportion of “long” responses as a function of test interval duration.
 
 ## Result: Logistic Regression
 
-![](output_15_0.png)
+![](figures/model1_fit.png)
 
 ## Exercise 12.1.1
 
 What do you think is the function of the thetalim construction
 in the WinBUGS script?
 
-![](winbugs.png){width=70%}
+![](figures/winbugs.png){width=70%}
 
 ## Exercise 12.1.1: Answer
 
-![](winbugs.png){width=70%}
+![](figures/winbugs.png){width=70%}
 
 ## Exercise 12.1.2
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import matplotlib
+matplotlib.use('Agg')
+
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np
@@ -30,6 +33,7 @@ def invlogit(x):
 def Phi(x):
     # probit transform
     return 0.5 + 0.5 * scipy.special.erf(x / np.sqrt(2))
+
 
 def load_data():
     # x = pd.read_csv("./data/data_x.txt", sep="\t", header=None)
@@ -89,121 +93,7 @@ if __name__ == '__main__':
     x, n, r, rprop, names = load_data()
     xij, nij, rij, xvect, xmean, sbjid, nsubjs = prepare_data(x, n, r)
 
-    with pm.Model() as model1:
-        #sigma_a = pm.Uniform("sigma_a", lower=0, upper=10)
-        #sigma_b = pm.Uniform("sigma_b", lower=0, upper=10)
-        sigma_a = pm.Uniform("sigma_a", lower=0, upper=0.5)
-        sigma_b = pm.Uniform("sigma_b", lower=0, upper=0.5)
 
-    #     mu_a = pm.Normal("mu_a", mu=0, tau=0.001)
-    #     mu_b = pm.Normal("mu_b", mu=0, tau=0.001)
-        mu_a = pm.Normal("mu_a", mu=0, tau=0.1000)
-        mu_b = pm.Normal("mu_b", mu=0, tau=1000)
-
-        alpha = pm.Normal("alpha", mu=mu_a, sd=sigma_a, shape=nsubjs)
-        beta = pm.Normal("beta", mu=mu_b, sd=sigma_b, shape=nsubjs)
-
-        linerpredi = alpha[sbjid] + beta[sbjid] * (xij - xvect)
-        thetaij = pm.Deterministic("thetaij", tPhi(linerpredi))
-    #     thetaij = pm.Deterministic("thetaij", tlogit(linerpredi))
-
-        rij_ = pm.Binomial("rij", p=thetaij, n=nij, observed=rij)
-       
-        prior_checks = pm.sample_prior_predictive(samples=150)
-
-
-    fig = plt.figure(figsize=(16, 8))
-    fig.text(0.5, -0.02, "Test Interval (ms)", ha="center", fontsize=20)
-    fig.text(
-        -0.02,
-        0.5,
-        "Proportion of Long Responses",
-        va="center",
-        rotation="vertical",
-        fontsize=20,
-    )
-    gs = gridspec.GridSpec(3, 4)
-
-    for ip in np.arange(nsubjs):
-        ax = plt.subplot(gs[ip])
-        xp = np.array(x.iloc[ip, :])
-        yp = np.array(rprop.iloc[ip, :])
-        ax.scatter(xp, yp, marker="s", alpha=0.5)
-
-        xl = np.linspace(190, 410, 100)
-
-        # Posterior sample from the trace
-        for ips in np.random.randint(0, 50, 100):
-    #         param = prior_checks[ips]
-    #         yl2 = logit(prior_checks["alpha"][ips][ip] + prior_checks["beta"][ips][ip] * (xl - xmean[ip]))
-            yl2 = Phi(prior_checks["alpha"][ips][ip] + prior_checks["beta"][ips][ip] * (xl - xmean[ip]))
-            plt.plot(xl, yl2, "k", linewidth=2, alpha=0.05)
-
-        plt.axis([190, 410, -0.1, 1.1])
-        plt.yticks((0, 0.5, 0.84, 1))
-        plt.title("Subject %s" % (ip + 1))
-        plt.title(names[ip])
-
-    plt.tight_layout();
-
-
-    trace1['alpha'].mean(axis=0)
-
-
-    trace1['mu_a'].mean()
-
-
-    prior_checks['alpha'].mean()
-
-
-    with model1:
-        trace1 = pm.sample(draws=1000, init="advi+adapt_diag", tune=2000)
-
-    az.plot_trace(trace1, var_names=["alpha", "beta"], compact=True);
-
-
-    # get MAP estimate
-    tmp = az.summary(trace1, var_names=["alpha", "beta"])
-    alphaMAP = tmp["mean"][np.arange(nsubjs)]
-    betaMAP = tmp["mean"][np.arange(nsubjs) + nsubjs]
-
-
-    fig = plt.figure(figsize=(16, 8))
-    fig.text(0.5, -0.02, "Test Interval (ms)", ha="center", fontsize=20)
-    fig.text(
-        -0.02,
-        0.5,
-        "Proportion of Long Responses",
-        va="center",
-        rotation="vertical",
-        fontsize=20,
-    )
-    gs = gridspec.GridSpec(3, 4)
-
-    for ip in np.arange(nsubjs):
-        ax = plt.subplot(gs[ip])
-        xp = np.array(x.iloc[ip, :])
-        yp = np.array(rprop.iloc[ip, :])
-        ax.scatter(xp, yp, marker="s", alpha=0.5)
-
-        xl = np.linspace(190, 410, 100)
-    #     yl = logit(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-        yl = Phi(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-        x1 = xl[find_nearest(yl, 0.5)]
-        x2 = xl[find_nearest(yl, 0.84)]
-
-        plt.plot(xl, yl, "k", linewidth=2)
-        plt.plot([x1, x1], [-0.1, 0.5], color="k", linestyle="--", linewidth=1)
-        plt.plot([190, x1], [0.5, 0.5], color="k", linestyle="--", linewidth=1)
-        plt.plot([x2, x2], [-0.1, 0.84], color="k", linestyle="--", linewidth=1)
-        plt.plot([190, x2], [0.84, 0.84], color="k", linestyle="--", linewidth=1)
-
-        plt.axis([190, 410, -0.1, 1.1])
-        plt.yticks((0, 0.5, 0.84, 1))
-        #plt.title("Subject %s" % (ip + 1))
-        plt.title(names[ip])
-
-    plt.tight_layout();
 
 
     with model1:
