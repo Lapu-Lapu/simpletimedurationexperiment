@@ -6,18 +6,16 @@ date: 2021/03/10
 
 # What is psychophysics?
 
-## Psychophysics
+## Psychophysics measures sensitivity to stimuli
 
 - Physical Stimulus $\rightarrow$ Psychological Response
-- Problem: Quantify psychological processes.
-- One Solution: 2-alterative forced choice tasks.
-    - Example:
-        - In each trial: 
-        - two beeps, first constant duration, second varying
-        - participants have to choose which beep was longer
-        - if duration is perceived as equal, probability of responses is equal
+- 2-alterative forced choice tasks:
+    - In each trial: 
+    - two beeps, first constant duration, second varying
+    - participants have to choose which beep was longer
+    - if duration is perceived as equal, probability of responses is equal
 
-## Psychophysics: PSE and JND
+## Subjective equality and sensitivity
 
 Beep Duration $\rightarrow$ Perceived Duration
 
@@ -29,21 +27,19 @@ JND
 
 ![](figures/pse_jnd_illustration.png){width=70%}
 
-## Data
-
-Proportion of “long” responses as a function of test interval duration.
+## Proportion of “long” responses as a function of test interval duration.
 
 ![](figures/data_plot.png)
 
 # Psychophysical Functions
 
-## Psychophysical Functions: Model
+## Psychological model of data generation
 
 ::: columns
 
 ::: column
 \begin{align}
-\Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}
+\Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}\nonumber
 \end{align}
 :::
 
@@ -54,7 +50,7 @@ Proportion of “long” responses as a function of test interval duration.
 
 ![](figures/model.png){width=70%}
 
-## Result: Logistic Regression
+## Estimated PSE/JND of subjects
 
 ![](figures/model1_fit.png)
 
@@ -112,17 +108,17 @@ Look closely at the data points that are used to fit the psychome-
 tric functions. Are all of them close to the sigmoid curve? How do you think
 possible outliers would influence the function, and the inferred JND?
 
-# Psychophysical Functions with Contamination
+# Psychological functions under contamination
 
-## Model
+## Psychological model of data generation with contamination
 
 ![](figures/contamination_model.png){width=70%}
 
-## Result: Regression
+## Cleaner estimation of PSE/JND
 
 ![](figures/model2_fit.png)
 
-## Result: Posterior JND
+## Effect of accounting for contamination on posterior JND
 
 ![](figures/model2_jnd.png)
 
@@ -133,11 +129,18 @@ inference for the psychophysical functions, and the key JND and PSE properties?
 
 ## Summary
 
+::: columns
+::: column
 - 2AFC paradigm useful for connecting physical stimuli with psychological processes
 - Logistic regression model estimates:
     - Point of Subjective Equality
     - Just Noticable Difference
-- pymc3 makes Bayesian analysis easy and fun!
-- junpenglao provided pymc3 implementation $\rightarrow$ more fun!
+- Latent variables can be introduced to account for contamination
+:::
+::: column
 
-![](figures/junpenglao.png){width=30%}
+- junpenglao provided pymc3 implementation $\rightarrow$ more fun, less stress!
+
+![](figures/junpenglao.png){width=90%}
+:::
+:::
