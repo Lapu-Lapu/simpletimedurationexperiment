@@ -23,4 +23,4 @@ with pm.Model() as model1:
 
     rij_ = pm.Binomial("rij", p=thetaij, n=nij, observed=rij)
    
-    prior_checks = pm.sample_prior_predictive(samples=150)
+    # prior_checks = pm.sample_prior_predictive(samples=150)

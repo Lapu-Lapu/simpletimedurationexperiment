@@ -3,6 +3,7 @@
 
 import matplotlib
 matplotlib.use('Agg')
+matplotlib.rcParams['savefig.bbox'] = 'tight'
 
 import arviz as az
 import matplotlib.pyplot as plt
@@ -92,124 +93,6 @@ def prepare_data(x, n, r):
 if __name__ == '__main__':
     x, n, r, rprop, names = load_data()
     xij, nij, rij, xvect, xmean, sbjid, nsubjs = prepare_data(x, n, r)
-
-    with model1:
-        ppc = pm.sample_posterior_predictive(trace1, samples=5000, var_names=["alpha", "beta"])
-
-    alphaPPC = ppc["alpha"].mean(axis=1)
-    betaPPC = ppc["beta"].mean(axis=1)
-
-
-    # PLOT FOR EXERCISE 12.1.2
-    fig = plt.figure(figsize=(16, 8))
-    fig.text(0.5, -0.02, "Test Interval (ms)", ha="center", fontsize=20)
-    fig.text(
-        -0.02,
-        0.5,
-        "Proportion of Long Responses",
-        va="center",
-        rotation="vertical",
-        fontsize=20,
-    )
-    gs = gridspec.GridSpec(3, 4)
-
-    ppcsamples = 100
-
-    for ip in np.arange(nsubjs):
-        ax = plt.subplot(gs[ip])
-        xp = np.array(x.iloc[ip, :])
-        yp = np.array(rprop.iloc[ip, :])
-        ax.scatter(xp, yp, marker="s", alpha=0.5)
-
-        xl = np.linspace(190, 410, 100)
-    #     yl = logit(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-        yl = Phi(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-
-        # Posterior sample from the trace
-        for ips in np.random.randint(0, 1000, ppcsamples):
-            param = trace1[ips]
-    #         yl2 = logit(param["alpha"][ip] + param["beta"][ip] * (xl - xmean[ip]))
-    #         yl3 = logit(param['mu_a'].mean() + param['mu_b'].mean() * (xl -xmean[ip]))
-            yl2 = Phi(param["alpha"][ip] + param["beta"][ip] * (xl - xmean[ip]))
-            yl3 = Phi(param['mu_a'].mean() + param['mu_b'].mean() * (xl -xmean[ip]))
-            plt.plot(xl, yl2, "k", linewidth=2, alpha=0.05)
-            plt.plot(xl, yl3, "y", linewidth=2, alpha=0.05)
-
-        plt.plot(xl, yl, "r", linewidth=2)
-
-        plt.axis([190, 410, -0.1, 1.1])
-        plt.yticks((0, 0.5, 0.84, 1))
-        plt.title("Subject %s" % (ip + 1))
-        plt.title(names[ip])
-
-    plt.tight_layout();
-
-
-    for ips in np.random.randint(0, 1000, ppcsamples):
-        param = trace1[ips]
-        yl2 = param["alpha"][ip]
-
-
-    param['alpha'][np.random.randint(0, 1000, ppcsamples)]
-
-
-    # PLOT FOR EXERCISE 12.1.4
-    fig = plt.figure(figsize=(16, 8))
-    fig.text(0.5, -0.02, "JND (ms)", ha="center", fontsize=20)
-    fig.text(-0.02, 0.5, "Posterior Density", va="center", rotation="vertical", fontsize=20)
-    gs = gridspec.GridSpec(3, 4)
-
-    ppcsamples = 500
-
-    for ip in np.arange(nsubjs):
-        ax = plt.subplot(gs[ip])
-
-        xl = np.linspace(190, 410, 200)
-        yl = logit(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-        x1 = xl[find_nearest(yl, 0.5)]
-        x2 = xl[find_nearest(yl, 0.84)]
-        jnd1 = x2 - x1
-
-        # Posterior sample
-        jndps = []
-        for ips in np.random.randint(0, 1000, ppcsamples):
-            param = trace1[ips]
-            yl2 = logit(param["alpha"][ip] + param["beta"][ip] * (xl - xmean[ip]))
-            x1 = xl[find_nearest(yl2, 0.5)]
-            x2 = xl[find_nearest(yl2, 0.84)]
-            jndps.append(x2 - x1)
-        pdfpc = stats.kde.gaussian_kde(jndps)
-
-        x2 = np.linspace(10, 109, 100)
-        plt.plot(x2, pdfpc(x2), "k", alpha=0.5)
-        plt.fill_between(x2, pdfpc(x2), 0, alpha=0.5, color="k")
-        plt.axvline(jnd1, color="r", ls="--", lw=2)
-
-        plt.axis([10, 105, -0.01, 0.125])
-        plt.title(names[ip])
-
-        plt.tight_layout();
-
-
-    # ## 12.2 Psychophysical functions under contamination
-    # 
-    # Latent-mixture model approach  
-    # $$ r_{ij} \sim \text{Binomial}(\theta_{ij},n_{ij})$$
-    # 
-    # $$   \theta_{ij} \sim
-    # \begin{cases}
-    # \frac{1}{1+\text{exp}\{-[\alpha_{i}+\beta_{i}(x_{ij}-\bar x_{i})]\}}  & \text{if $z_{ij} = 0$} \\
-    # \pi_{ij}  & \text{if $z_{ij} = 1$}
-    # \end{cases}  $$
-    # 
-    # $$ \Phi^{-1}(\phi_{i}) \sim \text{Gaussian}(\mu_{\phi},\sigma_{\phi})$$
-    # $$ z_{ij} \sim \text{Bernoulli}(\phi_{i})$$
-    # $$ \pi_{ij} \sim \text{Uniform}(0,1)$$
-    # $$ \alpha_{i} \sim \text{Gaussian}(\mu_{\alpha},\sigma_{\alpha})$$
-    # $$ \beta_{i} \sim \text{Gaussian}(\mu_{\beta},\sigma_{\beta})$$
-    # $$ \mu_{\alpha},\mu_{\beta},\mu_{\phi} \sim \text{Gaussian}(0,0.001)$$
-    # $$ \sigma_{\alpha},\sigma_{\beta} \sim \text{Uniform}(0,1000)$$
-    # $$ \sigma_{\phi} \sim \text{Uniform}(0,3)$$
 
     with pm.Model() as model2b:
         sigma_a = pm.Uniform("sigma_a", lower=0, upper=1000)

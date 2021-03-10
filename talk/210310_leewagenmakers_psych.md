@@ -91,7 +91,7 @@ function?
 The figure below shows the PSE for each subject. Compare subject 2
 with subject 8. How do they differ in their perception of the intervals?
 
-![](output_15_0.png)
+![](figures/model1_fit.png)
 
 ## Exercise 12.1.4
 
@@ -104,7 +104,7 @@ at perceiving differences in time, and how certain are your conclusions?
 
 ## Exercise 12.1.4: Answer
 
-![png](output_18_0.png)
+![](figures/posterior_jnd.png)
 
 ## Exercise 12.1.5
 
@@ -116,15 +116,15 @@ possible outliers would influence the function, and the inferred JND?
 
 ## Model
 
-![](contamination_model.png){width=70%}
+![](figures/contamination_model.png){width=70%}
 
 ## Result: Regression
 
-![](output_30_0.png)
+![](figures/model2_fit.png)
 
 ## Result: Posterior JND
 
-![](output_31_0.png)
+![](figures/model2_jnd.png)
 
 ## Exercise 12.2.1
 
@@ -140,4 +140,4 @@ inference for the psychophysical functions, and the key JND and PSE properties?
 - pymc3 makes Bayesian analysis easy and fun!
 - junpenglao provided pymc3 implementation $\rightarrow$ more fun!
 
-![](junpenglao.png){width=30%}
+![](figures/junpenglao.png){width=30%}
