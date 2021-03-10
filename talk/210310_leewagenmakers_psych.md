@@ -75,11 +75,15 @@ The sigmoid curves in Figure 12.4 are single lines derived from
 point estimates. How can you visualize the uncertainty in the psychometric
 function?
 
-![](output_15_0.png)
+![](figures/model1_fit.png)
 
 ## Exercise 12.1.2: Answer
 
-![](output_17_0.png)
+The sigmoid curves in Figure 12.4 are single lines derived from
+point estimates. How can you visualize the uncertainty in the psychometric
+function?
+
+![](figures/posterior_samples.png)
 
 
 ## Exercise 12.1.3

@@ -93,9 +93,6 @@ if __name__ == '__main__':
     x, n, r, rprop, names = load_data()
     xij, nij, rij, xvect, xmean, sbjid, nsubjs = prepare_data(x, n, r)
 
-
-
-
     with model1:
         ppc = pm.sample_posterior_predictive(trace1, samples=5000, var_names=["alpha", "beta"])
 
