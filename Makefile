@@ -36,7 +36,7 @@ figures/model1_fit.png: intermediate/trace_model1.tr
 figures/posterior_samples.png: intermediate/trace_model1.tr
 	python scripts/plot_posterior_samples.py
 
-figures/posterior_jnd.png: 
+figures/posterior_jnd.png: intermediate/trace_model1.tr
 	python scripts/plot_posterior_jnd.py
 
 # Contamination Model:

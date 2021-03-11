@@ -13,8 +13,9 @@ code-block-font-size: \tiny
 - Physical Stimulus $\rightarrow$ Psychological Response
 - 2-alterative forced choice tasks:
     - In each trial: 
-    - two beeps, first constant duration, second varying
-    - participants have to choose which beep was longer
+        1. constant duration beep (300ms)
+        2. varying duration beep
+        3. second beep shorter or longer?
     - if duration is perceived as equal, probability of responses is equal
 
 ## Subjective equality and sensitivity
@@ -49,9 +50,10 @@ JND
 
 :::{.column width="40%"}
 ![](figures/Binomial_Example.png){width=100%}
-:::
-:::
 
+![](figures/pse_jnd_illustration.png){width=100%}
+:::
+:::
 
 ## While my PYMC3 Gently Samples
 
@@ -110,6 +112,8 @@ at perceiving differences in time, and how certain are your conclusions?
 
 Are all data points close to the sigmoid curve? How do you think
 possible outliers would influence the function, and the inferred JND?
+
+![](figures/posterior_samples.png)
 
 # Psychological functions under contamination
 
