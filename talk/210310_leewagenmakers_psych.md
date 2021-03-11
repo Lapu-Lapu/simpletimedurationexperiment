@@ -1,7 +1,9 @@
 ---
 title: Psychometric Functions
+subtitle: Chapter 12 from Bayesian Cognitive Modeling (Lee, Wagenmakers)
 author: Benjamin Knopp
 date: 2021/03/10
+code-block-font-size: \tiny
 ...
 
 # What is psychophysics?
@@ -37,18 +39,23 @@ JND
 
 ::: columns
 
-::: column
-\begin{align}
-\Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}\nonumber
-\end{align}
+:::{.column width="60%"}
+<!-- \begin{align} -->
+<!-- \Theta_{ij} = \frac{1}{1+\exp\left(-(\alpha_i + \beta_i(x_{ij} - \bar x_i))\right)}\nonumber -->
+<!-- \end{align} -->
+
+![](figures/model.png){width=100%}
 :::
 
-::: column
-![](figures/Binomial_Example.png){width=90%}
+:::{.column width="40%"}
+![](figures/Binomial_Example.png){width=100%}
 :::
 :::
 
-![](figures/model.png){width=70%}
+
+## While my PYMC3 Gently Samples
+
+![](figures/pymc3model.png){width=70%}
 
 ## Estimated PSE/JND of subjects
 
@@ -58,10 +65,6 @@ JND
 
 What do you think is the function of the thetalim construction
 in the WinBUGS script?
-
-![](figures/winbugs.png){width=70%}
-
-## Exercise 12.1.1: Answer
 
 ![](figures/winbugs.png){width=70%}
 
@@ -91,21 +94,21 @@ with subject 8. How do they differ in their perception of the intervals?
 
 ## Exercise 12.1.4
 
-One of the aims of the analysis is to use the psychometric function
-to infer the JND. In Figure 12.4 the JND is indicated by the difference on
-the x-axis between the dashed lines corresponding to the 50% and 84% points
-on the y-axis. The JNDs from Figure 12.4 are point estimates. Plot posterior
-distributions for the JND, and interpret the results. Which subjects are better
-at perceiving differences in time, and how certain are your conclusions?
+In the plot below we have plotted point estimates for JND.
+
+- Infer posterior distribution for JND!
+
+![](figures/model1_fit.png)
 
 ## Exercise 12.1.4: Answer
+- Interpret the results: Which subjects are better
+at perceiving differences in time, and how certain are your conclusions?
 
 ![](figures/posterior_jnd.png)
 
 ## Exercise 12.1.5
 
-Look closely at the data points that are used to fit the psychome-
-tric functions. Are all of them close to the sigmoid curve? How do you think
+Are all data points close to the sigmoid curve? How do you think
 possible outliers would influence the function, and the inferred JND?
 
 # Psychological functions under contamination
@@ -127,7 +130,7 @@ possible outliers would influence the function, and the inferred JND?
 How did the inclusion of the contaminant process change the
 inference for the psychophysical functions, and the key JND and PSE properties?
 
-## Summary
+## Summary 
 
 ::: columns
 ::: column

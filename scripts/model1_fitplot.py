@@ -32,8 +32,8 @@ for ip in np.arange(nsubjs):
     ax.scatter(xp, yp, marker="s", alpha=0.5)
 
     xl = np.linspace(190, 410, 100)
-#     yl = logit(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
-    yl = Phi(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
+    yl = logit(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
+    # yl = Phi(alphaMAP[ip] + betaMAP[ip] * (xl - xmean[ip]))
     x1 = xl[find_nearest(yl, 0.5)]
     x2 = xl[find_nearest(yl, 0.84)]
 
